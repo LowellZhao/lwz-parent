@@ -14,7 +14,7 @@ public class CodeController {
     }
 
     @RequestMapping("/validate/{email}/{code}")
-    public Integer register(@PathVariable("email") String email,
+    public Integer validate(@PathVariable("email") String email,
                             @PathVariable("code") String code) {
         return 1;
     }
