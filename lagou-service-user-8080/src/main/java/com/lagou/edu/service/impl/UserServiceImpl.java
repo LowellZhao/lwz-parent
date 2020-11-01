@@ -1,11 +1,8 @@
 package com.lagou.edu.service.impl;
 
-import com.lagou.edu.cloud.service.CodeServiceFeignClient;
-import com.lagou.edu.dao.AuthCodeDao;
 import com.lagou.edu.dao.TokenDao;
-import com.lagou.edu.pojo.LagouAuthCode;
 import com.lagou.edu.pojo.LagouToken;
-import com.lagou.edu.service.IUserService;
+import com.lagou.edu.service.UserService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +11,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Resource
     private TokenDao tokenDao;
-
 
     @Override
     public LagouToken register(String email, String password, String code) {

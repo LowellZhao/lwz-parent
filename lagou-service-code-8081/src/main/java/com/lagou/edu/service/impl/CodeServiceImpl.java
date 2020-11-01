@@ -1,8 +1,9 @@
 package com.lagou.edu.service.impl;
 
+import com.lagou.edu.cloud.service.EmailServiceFeignClient;
 import com.lagou.edu.dao.AuthCodeDao;
 import com.lagou.edu.pojo.LagouAuthCode;
-import com.lagou.edu.service.ICodeService;
+import com.lagou.edu.service.CodeService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,13 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class CodeServiceImpl implements ICodeService {
+public class CodeServiceImpl implements CodeService {
 
     @Resource
     private AuthCodeDao authCodeDao;
+
+    @Resource
+    private EmailServiceFeignClient emailServiceFeignClient;
 
     @Override
     public Integer validate(String email, String code) {
@@ -25,8 +29,9 @@ public class CodeServiceImpl implements ICodeService {
         Optional<LagouAuthCode> one = authCodeDao.findOne(Example.of(authCode));
         if (one.isPresent()) {
             LagouAuthCode authCode1 = one.get();
-            LocalDateTime expiretime = authCode1.getExpiretime();
-            if (expiretime.isAfter(LocalDateTime.now())) {
+            LocalDateTime expireTime = authCode1.getExpiretime();
+            LocalDateTime now = LocalDateTime.now();
+            if (expireTime.isBefore(now)) {
                 return 2;
             }
             return 0;
@@ -41,7 +46,13 @@ public class CodeServiceImpl implements ICodeService {
         LocalDateTime now = LocalDateTime.now();
         lagouAuthCode.setCode(code + "").setEmail(email).setCreatetime(now).setExpiretime(now.plusMinutes(5L));
         LagouAuthCode save = authCodeDao.save(lagouAuthCode);
-        return save.getId() != null;
+
+        if (save.getId() != null) {
+            Boolean send = emailServiceFeignClient.send(email, code + "");
+            return send;
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
@@ -49,6 +60,5 @@ public class CodeServiceImpl implements ICodeService {
         System.out.println(now);
         System.out.println(now.plusMinutes(5));
     }
-
 
 }

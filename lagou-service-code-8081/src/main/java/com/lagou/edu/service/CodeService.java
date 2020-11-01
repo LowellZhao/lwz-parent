@@ -1,6 +1,6 @@
 package com.lagou.edu.service;
 
-public interface ICodeService {
+public interface CodeService {
 
     Integer validate(String email, String code);
 

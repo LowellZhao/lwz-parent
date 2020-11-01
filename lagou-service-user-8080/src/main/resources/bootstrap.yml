@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 #注册到Eureka服务中心
 eureka:
   client:
@@ -12,7 +12,18 @@ eureka:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
 spring:
   application:
-    name: lagou-service-code
+    name: lagou-service-user
+  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lagou?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  jpa:
+    database: MySQL
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  #避免将驼峰命名转换为下划线命名
 #针对的被调用方微服务名称,不加就是全局生效
 #lagou-service-resume:
 #  ribbon:
@@ -27,3 +38,17 @@ management:
   endpoint:
     health:
       show-details: always
+#hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+#ribbon的超时时间
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
