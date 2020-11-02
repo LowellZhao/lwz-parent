@@ -14,6 +14,7 @@
         <module>lagou-cloud-eureka-server-8761</module>
         <module>lagou-cloud-eureka-server-8762</module>
         <module>lagou-service-common</module>
+        <module>lgou-service-config</module>
     </modules>
 
     <!--父工程打包方式为pom-->

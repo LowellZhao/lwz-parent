@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 9006
 #注册到Eureka服务中心
 eureka:
   client:
@@ -12,27 +12,18 @@ eureka:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
 spring:
   application:
-    name: lagou-service-email
-  #邮件
-  mail:
-    host: smtp.163.com
-    username: 15223538324@163.com
-    password: ASYLJPLCHFMTQZEN
-    default-encoding: utf-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
+    name: lagou-cloud-configserver
   cloud:
-    # config客户端配置,和ConfigServer通信，并告知ConfigServer希望获取的配置信息在哪个文件中
     config:
-      name: lagou-config-repo  #配置文件名称
-      profile: dev  #后缀名称
-      label: master #分支名称
-      uri: http://localhost:9006    #ConfigServer配置中心地址
+      server:
+        git:
+          uri: https://gitee.com/LowellZhao/some-config.git #配置git服务地址
+          username: 15223538324@163.com #配置git用户名
+          password: 123456 #配置git密码
+          search-paths:
+            - lagou-config-repo
+      # 读取分支
+      label: master
   rabbitmq:
     host: 127.0.0.1
     port: 5672
