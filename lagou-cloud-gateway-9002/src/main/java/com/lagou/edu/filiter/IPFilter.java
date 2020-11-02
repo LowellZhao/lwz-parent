@@ -1,5 +1,7 @@
 package com.lagou.edu.filiter;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -20,9 +22,13 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@RefreshScope
 public class IPFilter implements GlobalFilter, Ordered {
 
     private static Map<String, List<LocalDateTime>> ipMap = new ConcurrentHashMap<>();
+
+    @Value("${lagou.maxCount:5}")
+    private Integer maxCount;
 
     /**
      * 过滤器核心方法
@@ -54,9 +60,10 @@ public class IPFilter implements GlobalFilter, Ordered {
                 }
             }
             int count = ipMap.get(host).size();
-            if (count > 10) {
+            System.out.println("maxCount = " + maxCount);
+            if (count > maxCount) {
                 response.setStatusCode(HttpStatus.FORBIDDEN);
-                String data = "当前IP在一分钟内注册超过10个，请稍后再试.";
+                String data = "您频繁进⾏注册，请求已被拒绝.";
                 DataBuffer wrap = response.bufferFactory().wrap(data.getBytes());
                 return response.writeWith(Mono.just(wrap));
             } else {

@@ -39,7 +39,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             String token = cookie.getValue();
             String email = userServiceFeignClient.info(token);
             if (email == null || "".equals(email)) {
-                response.setStatusCode(HttpStatus.SEE_OTHER);
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 response.getHeaders().set(HttpHeaders.LOCATION, "http://www.test.com/static/login.html");
                 return response.setComplete();
             } else {

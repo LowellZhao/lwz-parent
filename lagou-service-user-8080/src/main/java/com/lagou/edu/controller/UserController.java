@@ -40,6 +40,7 @@ public class UserController {
             return 1;
         }
         Cookie cookie = new Cookie("token", token.getToken());
+        cookie.setPath("/");
         response.addCookie(cookie);
 
         return 0;
@@ -60,6 +61,7 @@ public class UserController {
         }
 
         Cookie cookie = new Cookie("token", login.getToken());
+        cookie.setPath("/");
         response.addCookie(cookie);
 
         return login.getEmail();

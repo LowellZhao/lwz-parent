@@ -21,9 +21,6 @@
     <script>
         $(function () {
             var token = $.cookie("token");
-            if (token == null) {
-                token = "e10adc39-49ba-39ab-be56-e057f20f883e"
-            }
             $.ajax({
                 //url: "http://localhost:9002/api/user/login/"+email+"/"+password,
                 url: "http://www.test.com/api/user/info/" + token,

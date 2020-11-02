@@ -19,7 +19,7 @@ spring:
         git:
           uri: https://gitee.com/LowellZhao/some-config.git #配置git服务地址
           username: 15223538324@163.com #配置git用户名
-          password: 123456 #配置git密码
+          password: l19960515. #配置git密码
           search-paths:
             - lagou-config-repo
       # 读取分支
